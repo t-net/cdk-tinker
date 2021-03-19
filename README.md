@@ -1,5 +1,6 @@
 
-# Welcome to your CDK Python project!
+# AWS CDK Tinker Project
+https://vwds.udemy.com/course/aws-cloud-development-kit-from-beginner-to-professional
 
 This is a blank project for Python development with CDK.
 
@@ -55,4 +56,3 @@ command.
  * `cdk diff`        compare deployed stack with current state
  * `cdk docs`        open CDK documentation
 
-Enjoy!

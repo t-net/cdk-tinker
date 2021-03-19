@@ -6,7 +6,7 @@ with open("README.md") as fp:
 
 
 setuptools.setup(
-    name="cdk_udemy_tutorial",
+    name="cdk_tinker",
     version="0.0.1",
 
     description="An empty CDK Python app",
@@ -15,8 +15,8 @@ setuptools.setup(
 
     author="author",
 
-    package_dir={"": "cdk_udemy_tutorial"},
-    packages=setuptools.find_packages(where="cdk_udemy_tutorial"),
+    package_dir={"": "cdk_tinker"},
+    packages=setuptools.find_packages(where="cdk_tinker"),
 
     install_requires=[
         "aws-cdk.core==1.94.1",

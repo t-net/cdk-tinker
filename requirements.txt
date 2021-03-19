@@ -1,1 +1,3 @@
--e .
+--extra-index-url https://sre-pypi.apps.emea.vwapps.io/simple/
+vws_core
+aws-cdk.core
