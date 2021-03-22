@@ -1,0 +1,41 @@
+on:
+  pull_request:
+    branches:
+      - master
+    types:
+      - opened
+jobs:
+  automergePullRequest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: octokit/graphql-action@v2.x
+        id: get_latest_pull_request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          query: |
+            query GetPullRequest($owner:String!,$repository:String!,$pull_request_number:Int!) {
+              repository(owner:$owner,name:$repository) {
+                pullRequest(number:$pull_request_number) {
+                  id
+                }
+              }
+            }
+          owner: ${{ github.event.repository.owner.login }}
+          repository: ${{ github.event.repository.name }}
+          pull_request_number: ${{ github.event.pull_request.number }}
+      - run: "echo 'latest pull request ID: ${{ fromJson(steps.get_latest_pull_request.outputs.data).repository.pullRequest.id }}'"
+      - uses: octokit/graphql-action@v2.x
+        id: enable_automerge
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          query: |
+            mutation EnableAutomerge($pull_request_id:String!) {
+              enablePullRequestAutoMerge(input: {
+                pullRequestId:$pull_request_id
+              }) {
+                __typename
+              }
+            }
+          pull_request_id: ${{ fromJson(steps.get_latest_pull_request.outputs.data).repository.pullRequest.id }}
