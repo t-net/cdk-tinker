@@ -1,0 +1,27 @@
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+jobs:
+  logLatestPullRequest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: octokit/graphql-action@v2.x
+        id: get_latest_pull_request
+        with:
+          query: |
+            query getPullRequest($owner:String!,$repository:String!,$number:Int!) {
+              repository(owner:$owner,name:$repository) {
+                pullRequest(number:$number) {
+                  id
+                }
+              }
+            }
+          owner: ${{ github.event.repository.owner.name }}
+          repository: ${{ github.event.repository.name }}
+          number: ${{ github.event.pull_request.number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: "echo 'latest pull request: ${{ steps.get_latest_pull_request.outputs.data }}'"
